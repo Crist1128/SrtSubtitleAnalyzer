@@ -1,21 +1,23 @@
 package test;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Console;
+import srt.core.SrtLexer;
 import srt.core.SrtNode;
 import srt.exception.NullOnLoadSrtFileListenerException;
 import srt.exception.NullOnOperateSrtNodesListenerException;
 import srt.listener.OnLoadSrtFileListener;
-import srt.core.SrtAnalyzer;
+import srt.core.SrtMain;
 import srt.listener.OnOperateSrtNodesListener;
 import srt.operator.SrtOperator;
 import srt.operator.SrtOperatorFactory;
 
 import javax.management.JMException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Handler;
 
 import static java.lang.Thread.sleep;
 
@@ -26,9 +28,8 @@ public class SrtTestMain {
 	private static final int OPERTION_EXIT = 3;
 
 	private static List<SrtNode> srtNodes;
-	private Handler handler;
 
-	public static void main(String[] args) throws NullOnLoadSrtFileListenerException, JMException, NullOnOperateSrtNodesListenerException {
+	public static void main(String[] args) throws NullOnLoadSrtFileListenerException, JMException, NullOnOperateSrtNodesListenerException, FileNotFoundException {
 		// 1.读入字幕文件
 		// 2.打印可用操作
 		// 3.选择一个操作，可用操作有：
@@ -39,7 +40,12 @@ public class SrtTestMain {
 		// 6.操作器调取SrtAnalyzer
 
 
-		SrtAnalyzer analyzer = new SrtAnalyzer();
+		SrtLexer lexer = new SrtLexer();
+		File file = FileUtil.file("D:\\OneDrive - 汕头大学\\学习资料\\21年第二学期课程\\编译原理\\subtitle.srt");
+		lexer.execute(file);
+
+		/*
+		SrtMain analyzer = new SrtMain();
 		analyzer.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
 			public void onLoadSrtFileStart() {
 
@@ -68,9 +74,11 @@ public class SrtTestMain {
 
 		//1
 		analyzer.loadSrtFile(path);
+
+		 */
 	}
 
-	public static void doLoop(SrtAnalyzer analyzer) throws NullOnLoadSrtFileListenerException, JMException, NullOnOperateSrtNodesListenerException, InterruptedException {
+	public static void doLoop(SrtMain analyzer) throws NullOnLoadSrtFileListenerException, JMException, NullOnOperateSrtNodesListenerException, InterruptedException {
 		HashMap<String,Object> param = new HashMap();
 
 		Runnable executeRun = new Runnable() {

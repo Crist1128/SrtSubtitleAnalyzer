@@ -9,12 +9,12 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SrtAnalyzer{
+public class SrtMain {
 	//private List<SrtNode> srtNodeArrList = new ArrayList<SrtNode>(); //使用数组存储
 	private List<SrtNode> srtNodeLinkList = new LinkedList<SrtNode>(); //使用链表存储
 	private OnLoadSrtFileListener onLoadSrtFileListener;
 
-	public SrtAnalyzer() {
+	public SrtMain() {
 
 	}
 
@@ -40,7 +40,6 @@ public class SrtAnalyzer{
 		srtNodeLinkList.add(new SrtNode(1,b2,e2,c2));
 		loadSrtFileSuccess();
 	}
-
 
 	public void loadSrtFile(String path) throws NullOnLoadSrtFileListenerException {
 		if(onLoadSrtFileListener == null){
@@ -68,8 +67,6 @@ public class SrtAnalyzer{
 
 
 	}
-
-
 
 	public void operateSrtNodes(){
 
