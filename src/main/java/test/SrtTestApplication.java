@@ -215,8 +215,6 @@ public class SrtTestApplication {
 		Console.log(String.valueOf(OPERTION_4)+".保存修改到字幕文件");
 		Console.log(String.valueOf(OPERTION_5)+".打印当前字幕");
 		Console.log(String.valueOf(OPERTION_EXIT)+".退出");
-
-
 	}
 
 

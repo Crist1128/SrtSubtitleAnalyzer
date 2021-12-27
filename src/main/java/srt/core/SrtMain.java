@@ -123,7 +123,7 @@ public class SrtMain {
 		while (it.hasNext()){
 			SrtNode node = (SrtNode)it.next();
 			str+=String.format("%d\n",node.getSid());
-			str+=String.format("%s ---> %s\n",node.getBegin().toString(),node.getEnd().toString());
+			str+=String.format("%s --> %s\n",node.getBegin().toString(),node.getEnd().toString());
 			str+=String.format("%s\n",node.getContent());
 			str+=LINE_SEPARATOR;
 		}

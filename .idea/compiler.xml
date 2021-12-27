@@ -9,8 +9,8 @@
         <module name="SrtAnalyzer" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="SrtAnalyzer" target="13" />
+    <bytecodeTargetLevel target="11">
+      <module name="SrtAnalyzer" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

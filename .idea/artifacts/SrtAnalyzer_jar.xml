@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SrtAnalyzer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SrtAnalyzer_jar</output-path>
+    <root id="archive" name="SrtAnalyzer.jar">
+      <element id="module-output" name="SrtAnalyzer" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/cn/hutool/hutool-all/4.5.15/hutool-all-4.5.15.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
