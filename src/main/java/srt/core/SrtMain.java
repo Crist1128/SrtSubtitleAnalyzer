@@ -50,16 +50,13 @@ public class SrtMain {
 	}
 	 */
 
-	public void loadSrtFile(String path) throws NullOnLoadSrtFileListenerException {
+	public void loadSrtFile(String path){
 		if(onLoadSrtFileListener == null){
-			throw new NullOnLoadSrtFileListenerException();
+			loadSrtFileFail(new NullOnLoadSrtFileListenerException());
 		}
 		this.srtFilePath = path;
 
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				loadSrtFileStart();
+		loadSrtFileStart();
 				/*
 				try{
 					File srtFile = FileUtil.file(path);
@@ -68,33 +65,33 @@ public class SrtMain {
 				}
 
 				 */
-				SrtParser parser = new SrtParser();
-				File file=new File(path);
-				try {
-					parser.execute(file, new OnLoadSrtFileListener() {
-						@Override
-						public void onLoadSrtFileStart() {
-							loadSrtFileStart();
-						}
-
-						@Override
-						public void onLoadSrtFileSuccess(List<SrtNode> list) {
-							srtNodeLinkList = list;
-							loadSrtFileSuccess();
-						}
-
-						@Override
-						public void onLoadSrtFileFail(Exception e) {
-							onLoadSrtFileFail(e);
-						}
-					});
-				} catch (FileNotFoundException e) {
-					//e.printStackTrace();
-					onLoadSrtFileListener.onLoadSrtFileFail(e);
+		SrtParser parser = new SrtParser();
+		File file=new File(path);
+		try {
+			parser.execute(file, new OnLoadSrtFileListener() {
+				@Override
+				public void onLoadSrtFileStart() {
+					loadSrtFileStart();
 				}
-			}
-		});
-		thread.start();
+
+				@Override
+				public void onLoadSrtFileSuccess(List<SrtNode> list) {
+					if(!srtNodeLinkList.isEmpty()){
+						srtNodeLinkList.clear();
+					}
+					srtNodeLinkList = list;
+					loadSrtFileSuccess();
+				}
+
+				@Override
+				public void onLoadSrtFileFail(Exception e) {
+					loadSrtFileFail(e);
+				}
+			});
+		} catch (FileNotFoundException e) {
+			//e.printStackTrace();
+			onLoadSrtFileListener.onLoadSrtFileFail(e);
+		}
 	}
 
 	public void saveSrtFile(OnSaveSrtFileListener listener){
@@ -187,8 +184,9 @@ public class SrtMain {
 	}
 
 	public void printSrtNodeList(){
-		System.out.print("******printing content******\r\n");
+		System.out.print("******************字幕内容开始******************\r\n");
 		Console.log(SrtMain.convertString(srtNodeLinkList));
-		System.out.print("******end of content******\r\n");
+		System.out.print("******************字幕内容结束******************\r\n");
+
 	}
 }

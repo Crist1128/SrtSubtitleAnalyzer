@@ -64,12 +64,7 @@ public class SrtTestApplication {
 			public void onLoadSrtFileFail(Exception e) {
 				Console.log("读取srt文件失败！原因："+e.toString());
 				Console.log("请尝试重新输入");
-				try {
-					srtMain.loadSrtFile(scanInFilePath());
-				}catch (NullOnLoadSrtFileListenerException nullOnLoadSrtFileListenerException) {
-					Console.log("输入发生错误，程序退出");
-					nullOnLoadSrtFileListenerException.printStackTrace();
-				}
+				srtMain.loadSrtFile(scanInFilePath());
 			}
 		});
 
@@ -166,9 +161,35 @@ public class SrtTestApplication {
 							//Console.log("请输入参数：");
 							break;
 						case OPERTION_3:
+							Thread loadNewFileThread = new Thread(new Runnable() {
+								@Override
+								public void run() {
+									srtMain.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
+										@Override
+										public void onLoadSrtFileStart() {
+
+										}
+
+										@Override
+										public void onLoadSrtFileSuccess(List<SrtNode> list) {
+											Console.log("读取srt文件成功！共有字幕"+srtMain.getSrtNodeListSize()+"条");
+										}
+
+										@Override
+										public void onLoadSrtFileFail(Exception e) {
+											Console.log("读取srt文件失败！原因："+e.toString());
+											Console.log("请尝试重新输入");
+											srtMain.loadSrtFile(scanInFilePath());
+										}
+									});
+									srtMain.loadSrtFile(scanInFilePath());
+								}
+							});
+
 							try {
-								srtMain.loadSrtFile(scanInFilePath());
-							} catch (NullOnLoadSrtFileListenerException e) {
+								loadNewFileThread.start();
+								loadNewFileThread.join();
+							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 							break;
@@ -209,6 +230,7 @@ public class SrtTestApplication {
 					}
 
 				}
+
 			}
 		};
 
@@ -217,13 +239,14 @@ public class SrtTestApplication {
 	}
 
 	public static void printAvailableOperator(){
-		Console.log("可用操作：");
+		Console.log("***************可用操作：***************");
 		Console.log(String.valueOf(OPERTION_1)+".当前字幕整体时间移动");
 		//Console.log(String.valueOf(OPERTION_2)+".查找某一时间点的字幕");
 		Console.log(String.valueOf(OPERTION_3)+".重新选择字幕文件");
 		Console.log(String.valueOf(OPERTION_4)+".保存修改到字幕文件");
 		Console.log(String.valueOf(OPERTION_5)+".打印当前字幕");
 		Console.log(String.valueOf(OPERTION_EXIT)+".退出");
+		Console.log("*************************************");
 	}
 
 
