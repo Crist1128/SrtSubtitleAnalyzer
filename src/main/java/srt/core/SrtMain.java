@@ -109,7 +109,7 @@ public class SrtMain {
 			//e.printStackTrace();
 			listener.onSaveSrtFileFail(e);
 		}
-
+		listener.onSaveSrtFileSuccess();
 	}
 
 	public void saveSrtFile(String filePath,OnSaveSrtFileListener listener){

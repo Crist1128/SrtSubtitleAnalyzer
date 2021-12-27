@@ -45,34 +45,36 @@ public class SrtTestApplication {
 		//SrtLexer lexer = new SrtLexer();
 		SrtMain srtMain = new SrtMain();
 
-		final boolean[] loadSuccess = {false};
-		while(!loadSuccess[0]){
-			srtMain.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
-				public void onLoadSrtFileStart() {
+		srtMain.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
+			public void onLoadSrtFileStart() {
 
+			}
+			@Override
+			public void onLoadSrtFileSuccess(List<SrtNode> list) {
+				Console.log("读取srt文件成功！共有字幕"+srtMain.getSrtNodeListSize()+"条");
+				//Console.log("srtMain.printSrtNodeList()");
+				//printSrtNodeList(list);
+				try{
+					doLoop(srtMain);
+				}catch (Exception e){
+					e.printStackTrace();
 				}
-				@Override
-				public void onLoadSrtFileSuccess(List<SrtNode> list) {
-					loadSuccess[0] = true;
-					Console.log("读取srt文件成功！共有字幕"+srtMain.getSrtNodeListSize()+"条");
-					//Console.log("srtMain.printSrtNodeList()");
-					//printSrtNodeList(list);
-					try{
-						doLoop(srtMain);
-					}catch (Exception e){
-						e.printStackTrace();
-					}
 
+			}
+			public void onLoadSrtFileFail(Exception e) {
+				Console.log("读取srt文件失败！原因："+e.toString());
+				Console.log("请尝试重新输入");
+				try {
+					srtMain.loadSrtFile(scanInFilePath());
+				}catch (NullOnLoadSrtFileListenerException nullOnLoadSrtFileListenerException) {
+					Console.log("输入发生错误，程序退出");
+					nullOnLoadSrtFileListenerException.printStackTrace();
 				}
-				public void onLoadSrtFileFail(Exception e) {
-					Console.log("读取srt文件失败！原因："+e.toString());
-					Console.log("请尝试重新输入");
-				}
-			});
+			}
+		});
 
-			//1
-			srtMain.loadSrtFile(scanInFilePath());
-		}
+		//1
+		srtMain.loadSrtFile(scanInFilePath());
 	}
 
 	public static String scanInFilePath(){
@@ -187,8 +189,9 @@ public class SrtTestApplication {
 									});
 								}
 							});
-							saveFileThread.start();
+
 							try {
+								saveFileThread.start();
 								saveFileThread.join();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
