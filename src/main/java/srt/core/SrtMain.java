@@ -89,7 +89,8 @@ public class SrtMain {
 						}
 					});
 				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
+					onLoadSrtFileListener.onLoadSrtFileFail(e);
 				}
 			}
 		});
@@ -105,7 +106,7 @@ public class SrtMain {
 		try {
 			FileUtil.writeString(content,file, CharsetUtil.systemCharset());
 		}catch (IORuntimeException e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			listener.onSaveSrtFileFail(e);
 		}
 

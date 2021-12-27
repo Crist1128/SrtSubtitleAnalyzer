@@ -41,34 +41,38 @@ public class SrtTestApplication {
 		// 5.操作器执行对应操作
 		// 6.操作器调取SrtAnalyzer
 
-
+		Console.log("++++++++++++++++++字幕分析器 V1.0+++++++++++++++++++");
 		//SrtLexer lexer = new SrtLexer();
 		SrtMain srtMain = new SrtMain();
 
-		srtMain.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
-			public void onLoadSrtFileStart() {
+		final boolean[] loadSuccess = {false};
+		while(!loadSuccess[0]){
+			srtMain.setOnLoadSrtFileListener(new OnLoadSrtFileListener() {
+				public void onLoadSrtFileStart() {
 
-			}
-			@Override
-			public void onLoadSrtFileSuccess(List<SrtNode> list) {
-				Console.log("读取srt文件成功！共有字幕"+srtMain.getSrtNodeListSize()+"条");
-				//Console.log("srtMain.printSrtNodeList()");
-				//printSrtNodeList(list);
-				try{
-					doLoop(srtMain);
-				}catch (Exception e){
-					e.printStackTrace();
 				}
+				@Override
+				public void onLoadSrtFileSuccess(List<SrtNode> list) {
+					loadSuccess[0] = true;
+					Console.log("读取srt文件成功！共有字幕"+srtMain.getSrtNodeListSize()+"条");
+					//Console.log("srtMain.printSrtNodeList()");
+					//printSrtNodeList(list);
+					try{
+						doLoop(srtMain);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
 
-			}
-			public void onLoadSrtFileFail(Exception e) {
-				Console.log("读取srt文件失败！原因："+e.toString());
-			}
-		});
+				}
+				public void onLoadSrtFileFail(Exception e) {
+					Console.log("读取srt文件失败！原因："+e.toString());
+					Console.log("请尝试重新输入");
+				}
+			});
 
-		//1
-		srtMain.loadSrtFile(scanInFilePath());
-
+			//1
+			srtMain.loadSrtFile(scanInFilePath());
+		}
 	}
 
 	public static String scanInFilePath(){
@@ -122,6 +126,7 @@ public class SrtTestApplication {
 				int op = OPERTION_INIT;
 				Scanner scan = new Scanner(System .in);
 
+				outer:
 				while (op != OPERTION_EXIT){
 					//2
 					printAvailableOperator();
@@ -145,12 +150,13 @@ public class SrtTestApplication {
 							//Console.log("输入了参数："+param2);
 							param.put("srtMsecond",Integer.parseInt(param2));
 
-							Thread executeThread = new Thread(executeTimeShiftRun);
-							executeThread.start();
 							try {
+								Thread executeThread = new Thread(executeTimeShiftRun);
+								executeThread.start();
 								executeThread.join();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
+								break outer;
 							}
 
 							break;

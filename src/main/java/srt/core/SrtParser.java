@@ -1,6 +1,7 @@
 package srt.core;
 
 import cn.hutool.core.lang.Console;
+import srt.exception.SrtFileParseException;
 import srt.exception.SrtTimeHourOutOfBoundaryException;
 import srt.exception.SrtTimeOutOfBoundaryException;
 import srt.listener.OnLoadSrtFileListener;
@@ -54,47 +55,52 @@ public class SrtParser {
                 srtNodeList.add(srtNode);
             }
             listener.onLoadSrtFileSuccess(srtNodeList);
-        } catch (SrtTimeOutOfBoundaryException e) {
-            e.printStackTrace();
+        } catch (SrtFileParseException e) {
+            //e.printStackTrace();
             listener.onLoadSrtFileFail(e);
         }
 
      }
 
-    public static SrtNode parseStrToSrtNode(ArrayList<String> strNode) throws SrtTimeOutOfBoundaryException {
+    public static SrtNode parseStrToSrtNode(ArrayList<String> strNode) throws SrtFileParseException {
         SrtNode node = new SrtNode();
         if(strNode.size()>2){
 
             SrtTime begin = new SrtTime();
             SrtTime end = new SrtTime();
 
-            String content = "";
-            for(int index=2;index<strNode.size();index++){
-                content+=strNode.get(index);
+            try{
+                String content = "";
+                for(int index=2;index<strNode.size();index++){
+                    content+=strNode.get(index);
+                }
+                //Console.log("parsing strNode.get(0)="+strNode.get(0));
+                String[] timeStr = strNode.get(1).split("-->");
+                String[] beginStr = timeStr[0].split(":");
+                String[] endStr = timeStr[1].split(":");
+
+                begin.setHour(Integer.parseInt(beginStr[0].trim()));
+                begin.setMinute(Integer.parseInt(beginStr[1].trim()));
+                begin.setSecond(Integer.parseInt(beginStr[2].split(",")[0].trim()));
+                begin.setMsecond(Integer.parseInt(beginStr[2].split(",")[1].trim()));
+
+                end.setHour(Integer.parseInt(endStr[0].trim()));
+                end.setMinute(Integer.parseInt(endStr[1].trim()));
+                end.setSecond(Integer.parseInt(endStr[2].split(",")[0].trim()));
+                end.setMsecond(Integer.parseInt(endStr[2].split(",")[1].trim()));
+
+
+                node.setSid(Integer.parseInt(strNode.get(0).trim()));
+
+                node.setContent(content);
+
+                node.setBegin(begin);
+
+                node.setEnd(end);
+            }catch (Exception e){
+                throw new SrtFileParseException(e.toString());
             }
-            //Console.log("parsing strNode.get(0)="+strNode.get(0));
-            String[] timeStr = strNode.get(1).split("-->");
-            String[] beginStr = timeStr[0].split(":");
-            String[] endStr = timeStr[1].split(":");
 
-            begin.setHour(Integer.parseInt(beginStr[0].trim()));
-            begin.setMinute(Integer.parseInt(beginStr[1].trim()));
-            begin.setSecond(Integer.parseInt(beginStr[2].split(",")[0].trim()));
-            begin.setMsecond(Integer.parseInt(beginStr[2].split(",")[1].trim()));
-
-            end.setHour(Integer.parseInt(endStr[0].trim()));
-            end.setMinute(Integer.parseInt(endStr[1].trim()));
-            end.setSecond(Integer.parseInt(endStr[2].split(",")[0].trim()));
-            end.setMsecond(Integer.parseInt(endStr[2].split(",")[1].trim()));
-
-
-            node.setSid(Integer.parseInt(strNode.get(0).trim()));
-
-            node.setContent(content);
-
-            node.setBegin(begin);
-
-            node.setEnd(end);
         }
         return node;
     }
