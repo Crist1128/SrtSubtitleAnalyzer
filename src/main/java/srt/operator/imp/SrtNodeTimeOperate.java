@@ -37,16 +37,16 @@ public class SrtNodeTimeOperate {
         SrtTime begin = node.getBegin();
         SrtTime end = node.getEnd();
         try{
-            Console.log("node"+node.getSid()+" begin.asMsecondInt()+mSecond="+(begin.asMsecondInt()+mSecond));
-            Console.log("node"+node.getSid()+" end.asMsecondInt()+mSecond="+(end.asMsecondInt()+mSecond));
+            //Console.log("node"+node.getSid()+" begin.asMsecondInt()+mSecond="+(begin.asMsecondInt()+mSecond));
+            //Console.log("node"+node.getSid()+" end.asMsecondInt()+mSecond="+(end.asMsecondInt()+mSecond));
             begin.setMsecondInt(begin.asMsecondInt()+mSecond);
             end.setMsecondInt(end.asMsecondInt()+mSecond);
 
             node.setBegin(begin);
             node.setEnd(end);
 
-            Console.log("node"+node.getSid()+" after begin.asMsecondInt()="+node.getBegin().asMsecondInt());
-            Console.log("node"+node.getSid()+" after end.asMsecondInt()="+node.getEnd().asMsecondInt());
+            //Console.log("node"+node.getSid()+" after begin.asMsecondInt()="+node.getBegin().asMsecondInt());
+            //Console.log("node"+node.getSid()+" after end.asMsecondInt()="+node.getEnd().asMsecondInt());
         }catch (Exception e){
             //e.printStackTrace();
             return false;

@@ -62,7 +62,7 @@ public class SrtTime {
 	// x/(z*60*60) = a*z/60
 	// x
 	//有问题，设置不上
-	public void setMsecondInt(int msecond) throws SrtTimeOutOfBundryException{
+	public void setMsecondInt(int msecond) throws SrtTimeOutOfBoundaryException {
 		int totalSecond = (msecond - msecond%CONST_SECOND_CONVERT_MSECOND)/CONST_SECOND_CONVERT_MSECOND;
 		int totalMinute = (totalSecond-totalSecond%CONST_MINUTE_CONVERT_SECOND)/CONST_MINUTE_CONVERT_SECOND;
 		int totalHour = (totalMinute-totalMinute%CONST_HOUR_CONVERT_MINUTE)/CONST_HOUR_CONVERT_MINUTE;

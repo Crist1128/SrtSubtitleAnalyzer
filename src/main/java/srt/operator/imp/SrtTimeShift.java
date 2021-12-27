@@ -37,17 +37,10 @@ public class SrtTimeShift extends SrtOperator {
         if(onOperateSrtNodesListener == null){
             throw new NullOnOperateSrtNodesListenerException();
         }
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                onOperateSrtNodesListener.onOperationStart();
-                doTimeShift(srtNodes,onOperateSrtNodesListener);
-            }
-        });
-        thread.start();
+        onOperateSrtNodesListener.onOperationStart();
+        doTimeShift(srtNodes,onOperateSrtNodesListener);
         return null;
     }
-
 
     public void doTimeShift(List<SrtNode> srtNodes, OnOperateSrtNodesListener onOperateSrtNodesListener){
         Iterator it = srtNodes.iterator();

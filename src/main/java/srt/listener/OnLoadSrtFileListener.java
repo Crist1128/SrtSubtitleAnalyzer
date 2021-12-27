@@ -12,5 +12,5 @@ public interface OnLoadSrtFileListener {
 	public void onLoadSrtFileSuccess(List<SrtNode> list);
 
 	/*开始读取srt字幕文件失败*/
-	public void onLoadSrtFileFail();
+	public void onLoadSrtFileFail(Exception e);
 }

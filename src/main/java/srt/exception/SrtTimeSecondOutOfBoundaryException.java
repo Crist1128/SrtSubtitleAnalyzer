@@ -1,6 +1,6 @@
 package srt.exception;
 
-public class SrtTimeSecondOutOfBoundaryException extends SrtTimeOutOfBundryException {
+public class SrtTimeSecondOutOfBoundaryException extends SrtTimeOutOfBoundaryException {
     public static final String msg = "SrtTimeSecondOutOfBoundaryException";
 
     public SrtTimeSecondOutOfBoundaryException() {
