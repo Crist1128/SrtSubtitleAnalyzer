@@ -50,13 +50,15 @@ public class SrtLexer {
 
             }
              */
+             
+            ArrayList<String> node = new ArrayList<>();
             while (input.hasNextLine()){
                 String str=input.nextLine();
-                ArrayList<String> node = new ArrayList<>();
                 while(!str.isEmpty()){
                     node.add(str);
-                    rawStrNodes.add(node);
+                    str=input.nextLine();
                 }
+                rawStrNodes.add(node);
                 analyzeStrNode(node);
                 lines++;
             }
@@ -108,7 +110,7 @@ public class SrtLexer {
     }
 
     private static void nodeContentCheck(String content) {
-
+        
     }
 
     private static void nodePartTwoCheck(String s) {
