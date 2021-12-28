@@ -25,7 +25,8 @@ public class SrtTime {
 	public static final int CONST_HOUR_CONVERT_MINUTE = 60;
 
 
-	SrtTime() {
+	public SrtTime() {
+
 	}
 
 	SrtTime(int hour,int minute,int second,int msecond) {
@@ -48,10 +49,10 @@ public class SrtTime {
 	}
 
 	public int asMsecondInt(){
-		int ms = this.msecond;
-		ms+=hour*CONST_HOUR_CONVERT_MSECOND;
-		ms+=minute*CONST_MINUTE_CONVERT_MSECOND;
-		ms+=second*CONST_SECOND_CONVERT_MSECOND;
+		int ms = msecond;
+		ms+=(hour*CONST_HOUR_CONVERT_MSECOND);
+		ms+=(minute*CONST_MINUTE_CONVERT_MSECOND);
+		ms+=(second*CONST_SECOND_CONVERT_MSECOND);
 		return ms;
 	}
 	// assume a Hour,b Minute,c Second,d Msecond,z const=1000

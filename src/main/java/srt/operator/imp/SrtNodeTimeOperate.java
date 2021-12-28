@@ -94,5 +94,19 @@ public class SrtNodeTimeOperate {
         return true;
     }
 
+    protected static Boolean isGreaterThan(SrtTime t1,SrtTime t2){
+        if(t1.asMsecondInt()>t2.asMsecondInt()){
+            return true;
+        }
+        return false;
+    }
+
+    protected static Boolean isIn(SrtTime begin,SrtTime end,SrtTime t){
+        if(t.asMsecondInt()>=begin.asMsecondInt() && t.asMsecondInt() <= end.asMsecondInt()){
+            return true;
+        }
+        return false;
+    }
+
 
 }

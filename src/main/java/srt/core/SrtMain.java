@@ -120,32 +120,31 @@ public class SrtMain {
 		Iterator it = list.iterator();
 		while (it.hasNext()){
 			SrtNode node = (SrtNode)it.next();
-			str+=String.format("%d\n",node.getSid());
-			str+=String.format("%s --> %s\n",node.getBegin().toString(),node.getEnd().toString());
-			str+=String.format("%s\n",node.getContent());
-			str+=LINE_SEPARATOR;
+			str+=convertString(node);
 		}
 		return str;
 	}
 
-	public void operateSrtNodes(String opName, HashMap<String,Object> parameter, OnOperateSrtNodesListener listener) throws JMException, NullOnOperateSrtNodesListenerException {
-		SrtOperator operator = SrtOperatorFactory.getSrtOperator(opName,parameter);
-		operator.execute(srtNodeLinkList,listener);
+	public static String convertString(SrtNode node){
+		String str = "";
+		str+=String.format("%d\n",node.getSid());
+		str+=String.format("%s --> %s\n",node.getBegin().toString(),node.getEnd().toString());
+		str+=String.format("%s\n",node.getContent());
+		str+=LINE_SEPARATOR;
+		return str;
 	}
 
-	/**
-	 * 输入：SrtTime t
-	 * 返回：SrtNode n
-	 * 功能说明：根据时间轴时间点查找该点所在的字幕节点SrtNode
-	 * 实现说明：可以先考虑使用二叉查找，用t和SrtNode的begin比较
-	 */
-	public SrtNode getSrtNode(SrtTime t) {
-		SrtNode node = null;
-
-		if(srtNodeLinkList!=null && !srtNodeLinkList.isEmpty()) {
-
+	public void operateSrtNodes(String opName, HashMap<String,Object> parameter, OnOperateSrtNodesListener listener) {
+		try{
+			SrtOperator operator = SrtOperatorFactory.getSrtOperator(opName,parameter);
+			operator.execute(srtNodeLinkList,listener);
+		} catch (NullOnOperateSrtNodesListenerException e) {
+			listener.onOperationFail(e);
+			//e.printStackTrace();
+		} catch (JMException e) {
+			listener.onOperationFail(e);
+			//e.printStackTrace();
 		}
-		return node;
 	}
 
 	public void loadSrtFileStart() {
@@ -187,6 +186,11 @@ public class SrtMain {
 		System.out.print("******************字幕内容开始******************\r\n");
 		Console.log(SrtMain.convertString(srtNodeLinkList));
 		System.out.print("******************字幕内容结束******************\r\n");
+	}
 
+	public void printSrtNode(SrtNode node){
+		System.out.print("****************单个字幕内容开始****************\r\n");
+		Console.log(SrtMain.convertString(node));
+		System.out.print("****************单个字幕内容结束****************\r\n");
 	}
 }

@@ -11,5 +11,5 @@ public interface OnOperateSrtNodesListener {
 
     public void onOperationSuccess(List<SrtNode> srtNodes);
 
-    public void onOperationFail();
+    public void onOperationFail(Exception e);
 }
