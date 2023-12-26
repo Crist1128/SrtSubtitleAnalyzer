@@ -49,4 +49,11 @@ public class SrtNode {
 		this.content = content;
 	}
 
+	@Override
+	public String toString() {
+		return "字幕序号: " + sid + "\n" +
+				"开始时间: " + begin.toString() + "\n" +
+				"结束时间: " + end.toString() + "\n" +
+				"内容: " + content + "\n";
+	}
 }

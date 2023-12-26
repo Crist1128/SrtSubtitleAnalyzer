@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="SrtAnalyzer" target="11" />
+      <module name="SrtAnalyzer" target="13" />
     </bytecodeTargetLevel>
   </component>
 </project>

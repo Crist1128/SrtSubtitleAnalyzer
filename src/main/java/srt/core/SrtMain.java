@@ -193,4 +193,9 @@ public class SrtMain {
 		Console.log(SrtMain.convertString(node));
 		System.out.print("****************单个字幕内容结束****************\r\n");
 	}
+
+	// 新增方法来获取字幕节点列表
+	public List<SrtNode> getSrtNodeList() {
+		return new LinkedList<>(srtNodeLinkList); // 返回字幕节点列表的拷贝
+	}
 }

@@ -350,7 +350,7 @@ public class SrtTestApplication {
 	public static String scanInFilePath(){
 		String path;
 		Scanner scan = new Scanner(System.in);
-		Console.log("输入文件路径：");//"D:\\OneDrive - 汕头大学\\学习资料\\21年第二学期课程\\编译原理\\subtitle.srt"
+		Console.log("输入文件路径：");
 		path = scan.nextLine();
 		return path;
 	}
