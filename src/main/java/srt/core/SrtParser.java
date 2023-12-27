@@ -2,8 +2,6 @@ package srt.core;
 
 import cn.hutool.core.lang.Console;
 import srt.exception.SrtFileParseException;
-import srt.exception.SrtTimeHourOutOfBoundaryException;
-import srt.exception.SrtTimeOutOfBoundaryException;
 import srt.listener.OnLoadSrtFileListener;
 
 import java.io.File;
@@ -15,66 +13,60 @@ import java.util.Scanner;
 
 public class SrtParser {
 
-     public static void execute(File file, OnLoadSrtFileListener listener) throws FileNotFoundException {
-
-        try(Scanner input=new Scanner(file)) {
+    /**
+     * 主要执行方法，解析SRT文件并通知监听器进度。
+     *
+     * @param file 要解析的SRT文件。
+     * @param listener 监听文件加载事件的监听器。
+     * @throws FileNotFoundException 如果文件未找到。
+     */
+    public static void execute(File file, OnLoadSrtFileListener listener) throws FileNotFoundException {
+        try (Scanner input = new Scanner(file)) {
             List<SrtNode> srtNodeList = new LinkedList<>();
+            listener.onLoadSrtFileStart(); // 通知监听器文件加载开始
 
-            /*
-            while (input.hasNext()){
-                String str = input.next();
-                Console.log(str);
-
-                rawBytes.add(str);
-
-                if(str == "\n"){
-                    Console.log("line "+lines+":found lineSeparator \\n");
-                }
-                if(str == "\r"){
-                    Console.log("line "+lines+":found lineSeparator \\r");
-                }
-
-            }
-             */
-
-            listener.onLoadSrtFileStart();
-            while (input.hasNextLine()){
+            while (input.hasNextLine()) {
                 ArrayList<String> node = new ArrayList<>();
-                String str=input.nextLine();
-                while(!str.isEmpty()){
-                    //Console.log("str is not empty:"+str);
+                String str = input.nextLine();
+                while (!str.isEmpty()) {
                     node.add(str);
-                    if(input.hasNextLine()){
-                        str=input.nextLine();
-                    }else{
+                    if (input.hasNextLine()) {
+                        str = input.nextLine();
+                    } else {
                         break;
                     }
                 }
-                //Console.log("node parse start");
+                // 解析单个字幕块并添加到列表中
                 SrtNode srtNode = parseStrToSrtNode(node);
                 srtNodeList.add(srtNode);
             }
-            listener.onLoadSrtFileSuccess(srtNodeList);
+            listener.onLoadSrtFileSuccess(srtNodeList); // 通知监听器文件加载成功
         } catch (SrtFileParseException e) {
-            //e.printStackTrace();
-            listener.onLoadSrtFileFail(e);
+            listener.onLoadSrtFileFail(e); // 通知监听器文件加载失败
         }
+    }
 
-     }
-
+    /**
+     * 将字符串列表解析为SrtNode对象。
+     *
+     * @param strNode 字幕块的字符串列表。
+     * @return 解析得到的SrtNode对象。
+     * @throws SrtFileParseException 如果解析过程中遇到错误。
+     */
     public static SrtNode parseStrToSrtNode(ArrayList<String> strNode) throws SrtFileParseException {
         SrtNode node = new SrtNode();
-        if(strNode.size()>2){
-
+        if (strNode.size() > 2) {
             SrtTime begin = new SrtTime();
             SrtTime end = new SrtTime();
 
-            try{
+            try {
+                // 解析字幕内容
                 String content = "";
-                for(int index=2;index<strNode.size();index++){
-                    content+=strNode.get(index);
+                for (int index = 2; index < strNode.size(); index++) {
+                    content += strNode.get(index);
                 }
-                //Console.log("parsing strNode.get(0)="+strNode.get(0));
+
+                // 解析开始和结束时间
                 String[] timeStr = strNode.get(1).split("-->");
                 String[] beginStr = timeStr[0].split(":");
                 String[] endStr = timeStr[1].split(":");
@@ -89,18 +81,14 @@ public class SrtParser {
                 end.setSecond(Integer.parseInt(endStr[2].split(",")[0].trim()));
                 end.setMsecond(Integer.parseInt(endStr[2].split(",")[1].trim()));
 
-
                 node.setSid(Integer.parseInt(strNode.get(0).trim()));
-
                 node.setContent(content);
-
                 node.setBegin(begin);
-
                 node.setEnd(end);
-            }catch (Exception e){
+            } catch (Exception e) {
+                // 如果解析过程中出现任何异常，抛出SrtFileParseException
                 throw new SrtFileParseException(e.toString());
             }
-
         }
         return node;
     }
